@@ -4,6 +4,7 @@ import TextInput from '../../atoms/TextInput/TextInput';
 import SingleSelect from '../../atoms/SingleSelect/SingleSelect';
 import Button from '../../atoms/Button/Button';
 
+
 const CATEGORY_OPTIONS = [
   "Groceries", "Eating & Drinking Out",
   "Transport", "Bills", "Boring Stuff", "Fun Stuff",
@@ -37,6 +38,14 @@ const FormInputLabel = styled.p`
   margin-right: 2%;
 `
 
+async function getUser() {
+  const axios = require('axios');
+  const response = await fetch('http://localhost:3001/users/3')
+  .then((res) => res.json())
+  .catch(err => console.log(err));
+  return response;
+}
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -55,8 +64,10 @@ class Form extends Component {
     this.setState({ [evt.target.name]: evt.target.value });
   }
 
-  handleSubmit(evt) {
+  async handleSubmit(evt) {
     evt.preventDefault();
+    const user = await getUser();
+    this.props.store.set('user', user);
   }
 
   render() {
@@ -65,7 +76,7 @@ class Form extends Component {
     return(
       <FormContainer>
         <h3>{formType === 'edit' ? 'Edit' : 'Create New'} Record</h3>
-        <form>
+        <form onSubmit={this.handleSubmit}>
         <FormRow>
           <FormInputLabel>Amount</FormInputLabel>
           <TextInput
@@ -101,13 +112,13 @@ class Form extends Component {
           />
         </FormRow>
         <ButtonRow>
-          <Button text={'Cancel'} type={"cancel"} />
+          <Button text={'Cancel'} type={"cancel"} onClick={this.props.onRequestClose} />
           <Button text={'Submit'} type={"submit"} />
         </ButtonRow>
         </form>
       </FormContainer>
     )
   }
-}
+};
 
 export default Form;

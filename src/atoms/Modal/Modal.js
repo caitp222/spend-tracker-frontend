@@ -20,11 +20,12 @@ const ModalBox = styled.div`
   width: 80%;
   height: 80%;
   background-color: white;
-  display:flex;
+  display: flex;
   justify-content: center;
 `
 
 const Modal = (props) => {
+
   return(
     <ModalBackground>
       <ModalBox>

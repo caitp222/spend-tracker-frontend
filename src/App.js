@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import { createStore } from './stores/store';
-
-
-// clean these up later
-import Form from './molecules/Form/Form';
-import Modal from './atoms/Modal/Modal';
-//
+import AppRouter from './router/router';
+import ModalProvider from './core/contexts/ModalProvider';
+import ModalRoot from './core/contexts/ModalRoot';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Modal component={<Form />} />
+        <ModalProvider>
+          <ModalRoot />
+          <AppRouter>
+          </AppRouter>
+        </ModalProvider>
       </div>
     );
   }
 }
 
-export default createStore(App);
+export default App;
