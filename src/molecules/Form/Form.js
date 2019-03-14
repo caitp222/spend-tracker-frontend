@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TextInput from '../../atoms/TextInput/TextInput';
 import SingleSelect from '../../atoms/SingleSelect/SingleSelect';
 import Button from '../../atoms/Button/Button';
+import { getUser, createEntry } from '../../core/utilities/apiFunctions';
 
 
 const CATEGORY_OPTIONS = [
@@ -38,19 +39,11 @@ const FormInputLabel = styled.p`
   margin-right: 2%;
 `
 
-async function getUser() {
-  const axios = require('axios');
-  const response = await fetch('http://localhost:3001/users/3')
-  .then((res) => res.json())
-  .catch(err => console.log(err));
-  return response;
-}
-
 class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: '',
+      date: '2019-03-11',
       amount: '',
       record_type: 'Spend',
       category: 'Groceries',
@@ -66,8 +59,8 @@ class Form extends Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-    const user = await getUser();
-    this.props.store.set('user', user);
+    const record = {...this.state};
+    const newRecord = await createEntry(record);
   }
 
   render() {
